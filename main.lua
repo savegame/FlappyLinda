@@ -2,7 +2,7 @@
 levels = {}
 level = 0
 
--- Load eeror screen
+-- Load error screen
 require "engine/errorscr"
 
 global = {}
