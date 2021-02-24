@@ -7,9 +7,14 @@ levels[0] = function()
 	spr_micro:setFilter('nearest', 'nearest')
 	local w_offset = spr_micro:getWidth() * .5
 	local h_offset = spr_micro:getHeight() * .5
-	local w = love.graphics.getWidth()
-	local h = love.graphics.getHeight()
+	-- local w = love.graphics.getWidth()
+	-- local h = love.graphics.getHeight()
+	local w = 480 --love.graphics.getWidth()
+	local h = love.graphics.getHeight() * (480/love.graphics.getWidth())
 	local sx = math.ceil(w / spr_micro:getWidth())
+	local transform = love.math.newTransform()
+	
+	transform:scale(love.graphics.getWidth()/800.0, love.graphics.getWidth()/800.0)
 
 	if sx > 3 then sx = sx - 1 end
 
@@ -33,9 +38,16 @@ levels[0] = function()
 	local fnt_small = love.graphics.newFont('assets/fnt/fnt_gamer.ttf', 30)
 	function love.draw()
 		love.graphics.setBackgroundColor(hex("68386cff"))
+		love.graphics.push()
+		love.graphics.scale(love.graphics.getWidth()/480.0)
 		love.graphics.draw(spr_micro, w/2 - mw/2, h/2 - mh/2, 0, sx, sx)
 		love.graphics.setFont(fnt_small)
 		love.graphics.print("Loading...", 25, h - 50)
+		love.graphics.pop()
 	end
 
+	function love.resize()
+		-- transform:reset()
+		-- transform:scale(love.graphics.getWidth()/800, love.graphics.getWidth()/800)
+	end
 end

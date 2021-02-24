@@ -52,11 +52,12 @@ levels[1] = function()
 		global.score_board = false
 
 		-- Parse resolution  2400x1080
-		global.win_w = love.graphics.getWidth()
-		global.win_h = love.graphics.getHeight()
+		global.win_w = global.width --love.graphics.getWidth()
+		global.win_h = love.graphics.getHeight() * (global.width/love.graphics.getWidth())
 		global.win_xoffset = global.win_w*.5
 		global.win_yoffset = global.win_h*.5
-		success = love.window.setMode(global.win_w, global.win_h)
+		success = love.window.setMode(global.win_w, global.win_h, {resizable = true})
+		-- love.graphics.transform(t)
 
 		if (3 * ratio)%2 == 0 then
 			global.world_speed = global.world_speed + 1
@@ -192,19 +193,18 @@ levels[1] = function()
 		end
 	end
 
+	function love.keypressed(key, scancode, isrepeat)
+	   if key == "space" then
+		  key_or_not_key_press()
+	   end
+
+	   if key == "d" then
+		   global.debug = not global.debug 
+	   end
+
+	end
+
 	function love.update(dt)
-
-		function love.keypressed(key, scancode, isrepeat)
-		   if key == "space" then
-		      key_or_not_key_press()
-		   end
-
-		   if key == "d" then
-		   	global.debug = not global.debug 
-		   end
-
-		end
-
 		-- effects
 		sin_value = sin_value + ((math.pi*2) / 60)
 		sin = .5 + math.sin(sin_value) - .5
@@ -285,6 +285,8 @@ levels[1] = function()
 	local score_h = font.large:getHeight( global.score ) * .5
 
 	function love.draw()
+		love.graphics.push()
+		love.graphics.scale(love.graphics.getWidth()/global.width)
 
 		do -- Tiles
 			-- Stars
@@ -470,7 +472,7 @@ levels[1] = function()
 				draw_text("parse h: "..ph, 10, 160)
 			end
 		end
-
+		love.graphics.pop()
 	end
 
 	function level_unload()
